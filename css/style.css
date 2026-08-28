@@ -656,3 +656,131 @@ html[data-theme="light"] .case-empty{
 
 /* V5.10 动态智能折叠页码 */
 #news-pagination .page-ellipsis{display:inline-flex;align-items:center;justify-content:center;min-width:24px;padding:0 3px;opacity:.58;user-select:none}
+
+
+/* ===== V5.11 mobile layout refinement ===== */
+@media (max-width: 720px) {
+  /* Banner: reduce background zoom and enlarge the product artwork */
+  .hero {
+    height: 580px !important;
+    min-height: 540px !important;
+  }
+  .hero-bg {
+    background-size: auto 84% !important;
+    background-position: center 38% !important;
+    background-repeat: no-repeat !important;
+    background-color: #06090e !important;
+  }
+  .hero-inner {
+    width: calc(100% - 28px) !important;
+    padding-top: 78px !important;
+  }
+  .hero h1 {
+    font-size: 38px !important;
+    line-height: 1.06 !important;
+    margin-top: 10px !important;
+    margin-bottom: 12px !important;
+  }
+  .hero p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    max-width: 92% !important;
+  }
+  .hero-actions {
+    margin-top: 18px !important;
+  }
+  .hero-art {
+    right: -7% !important;
+    bottom: 24px !important;
+    width: 106% !important;
+    height: 292px !important;
+    opacity: .94 !important;
+  }
+  .hero-art img {
+    width: 100% !important;
+    max-width: none !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+  }
+  .hero-controls {
+    bottom: 14px !important;
+  }
+
+  /* Capability: keep the proof points but compress them into one row */
+  .stats-section {
+    padding-top: 32px !important;
+    padding-bottom: 32px !important;
+  }
+  .stats-track {
+    width: calc(100% - 16px) !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+  .stat-card {
+    height: 94px !important;
+    min-height: 94px !important;
+    padding: 10px 7px !important;
+    border-radius: 12px !important;
+    text-align: center !important;
+  }
+  .stat-index,
+  .stat-card p {
+    display: none !important;
+  }
+  .stat-value {
+    margin: 7px 0 7px !important;
+    font-size: clamp(21px, 6vw, 27px) !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+  .stat-card h3 {
+    margin: 0 !important;
+    font-size: 9px !important;
+    line-height: 1.28 !important;
+    font-weight: 600 !important;
+  }
+
+  /* News: two cards per page on mobile, cards remain vertical */
+  .news-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .news-card {
+    height: 252px !important;
+  }
+  .news-card > img {
+    height: 112px !important;
+  }
+  .news-info {
+    height: 140px !important;
+    padding: 11px 12px !important;
+  }
+  .news-info h3 {
+    height: 40px !important;
+    margin: 4px 0 !important;
+  }
+  .news-info p {
+    height: 32px !important;
+    -webkit-line-clamp: 2 !important;
+  }
+  .news-pagination {
+    margin-top: 14px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero-art {
+    width: 112% !important;
+    right: -10% !important;
+  }
+  .stat-card {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  .stat-value {
+    font-size: 21px !important;
+  }
+  .stat-card h3 {
+    font-size: 8.5px !important;
+  }
+}
