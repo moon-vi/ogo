@@ -784,3 +784,318 @@ html[data-theme="light"] .case-empty{
     font-size: 8.5px !important;
   }
 }
+
+
+/* ===== V5.12 mobile streamlined homepage =====
+   Mobile information order:
+   Banner -> Case search & cases -> 2 news list rows -> About video -> Contact row -> Footer
+   Desktop layout is unchanged. */
+@media (max-width: 720px) {
+  /* Mobile nav only keeps sections that actually remain visible */
+  #main-nav a[href="#services"],
+  #main-nav a[href="#stats"] {
+    display: none !important;
+  }
+
+  /* Banner: background + copy only, no product artwork */
+  .hero {
+    height: 410px !important;
+    min-height: 410px !important;
+  }
+  .hero-bg {
+    background-size: auto 78% !important;
+    background-position: center 45% !important;
+    background-repeat: no-repeat !important;
+    background-color: #06090e !important;
+  }
+  .hero-inner {
+    display: block !important;
+    width: calc(100% - 36px) !important;
+    height: 100% !important;
+    padding-top: 94px !important;
+  }
+  .hero-copy {
+    width: 100% !important;
+    max-width: 520px !important;
+  }
+  .hero-copy .eyebrow {
+    font-size: 9px !important;
+    letter-spacing: 2px !important;
+  }
+  .hero h1 {
+    font-size: 32px !important;
+    line-height: 1.08 !important;
+    letter-spacing: -1px !important;
+    margin: 10px 0 10px !important;
+  }
+  .hero p {
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+    max-width: 92% !important;
+    margin: 0 !important;
+  }
+  .hero-actions {
+    gap: 7px !important;
+    margin-top: 16px !important;
+  }
+  .hero-actions .btn {
+    padding: 9px 13px !important;
+    font-size: 11px !important;
+  }
+  .hero-art {
+    display: none !important;
+  }
+  .hero-controls {
+    bottom: 12px !important;
+    gap: 7px !important;
+  }
+  .hero-controls > button {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 18px !important;
+  }
+
+  /* Remove desktop-only sections entirely */
+  #services,
+  #stats {
+    display: none !important;
+  }
+
+  /* Cases become the first content block: search first, no title/category filters */
+  #cases {
+    padding-top: 20px !important;
+    padding-bottom: 30px !important;
+  }
+  #cases > .section-head,
+  #cases .cases-filter {
+    display: none !important;
+  }
+  #cases .cases-tools {
+    width: 100% !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+  #cases .case-search {
+    width: calc(100% - 32px) !important;
+    max-width: none !important;
+    height: 42px !important;
+    margin: 0 auto 8px !important;
+    border-radius: 12px !important;
+  }
+  #cases .case-search input {
+    font-size: 13px !important;
+  }
+  #cases .case-search-status {
+    width: calc(100% - 32px) !important;
+    margin: 0 auto 6px !important;
+    font-size: 10px !important;
+    min-height: 14px !important;
+  }
+  #cases .case-viewport {
+    padding-top: 7px !important;
+    padding-bottom: 4px !important;
+  }
+  #cases .case-card {
+    flex-basis: 178px !important;
+    width: 178px !important;
+    height: 100px !important;
+  }
+
+  /* News: latest two items only, rendered visually as plain list rows */
+  #news {
+    padding: 26px 16px 28px !important;
+  }
+  #news .section-head {
+    width: calc(100% - 8px) !important;
+    margin: 0 auto 8px !important;
+  }
+  #news .section-head span,
+  #news .section-head p {
+    display: none !important;
+  }
+  #news .section-head h2 {
+    margin: 0 !important;
+    font-size: 20px !important;
+    line-height: 1.25 !important;
+  }
+  #news .news-viewport {
+    width: calc(100% - 8px) !important;
+  }
+  #news .news-grid {
+    display: block !important;
+  }
+  #news .news-card {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 54px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--line) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+  #news .news-card:first-child {
+    border-top: 1px solid var(--line) !important;
+  }
+  #news .news-card > img,
+  #news .news-tag,
+  #news .news-info p,
+  #news .news-card > .border-sweep {
+    display: none !important;
+  }
+  #news .news-info {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) auto !important;
+    grid-template-areas: "title date" !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 54px !important;
+    padding: 10px 2px !important;
+    overflow: visible !important;
+  }
+  #news .news-info h3 {
+    grid-area: title !important;
+    height: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+    font-weight: 600 !important;
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  #news .news-date {
+    grid-area: date !important;
+    font-size: 9px !important;
+    white-space: nowrap !important;
+    color: var(--muted) !important;
+  }
+  #news .news-pagination {
+    display: none !important;
+  }
+
+  /* About: only the video remains */
+  #about {
+    padding: 20px 16px 30px !important;
+  }
+  #about > .section-head,
+  #about .about-text {
+    display: none !important;
+  }
+  #about .about-layout {
+    display: block !important;
+    width: calc(100% - 8px) !important;
+    margin: 0 auto !important;
+  }
+  #about .about-video {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    border-radius: 14px !important;
+  }
+  #about .about-video img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  #about .play-circle {
+    width: 52px !important;
+    height: 52px !important;
+    font-size: 14px !important;
+  }
+  #about .video-label {
+    font-size: 8px !important;
+    left: 12px !important;
+    bottom: 10px !important;
+  }
+
+  /* Contact: MOBILE + EMAIL + ADDRESS in one lightweight horizontal row */
+  #contact {
+    padding: 18px 16px 22px !important;
+  }
+  #contact .contact-cta {
+    display: none !important;
+  }
+  #contact .contact-grid {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    width: calc(100% - 8px) !important;
+    margin: 0 auto !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+    white-space: nowrap !important;
+  }
+  #contact .contact-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+  #contact .contact-item[data-kind="PHONE"] {
+    display: none !important;
+  }
+  #contact .contact-item {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    overflow: visible !important;
+  }
+  #contact .contact-item > .border-sweep {
+    display: none !important;
+  }
+  #contact .contact-item small {
+    display: inline !important;
+    margin: 0 5px 0 0 !important;
+    font-size: 8px !important;
+    letter-spacing: .6px !important;
+    color: var(--primary) !important;
+  }
+  #contact .contact-item strong {
+    display: inline !important;
+    max-height: none !important;
+    font-size: 10px !important;
+    line-height: 1.4 !important;
+    font-weight: 500 !important;
+    overflow: visible !important;
+  }
+
+  /* Footer is compact on mobile */
+  footer {
+    padding: 18px 16px 22px !important;
+    gap: 12px !important;
+    font-size: 9px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero {
+    height: 390px !important;
+    min-height: 390px !important;
+  }
+  .hero-inner {
+    padding-top: 88px !important;
+  }
+  .hero h1 {
+    font-size: 29px !important;
+  }
+  #cases .case-card {
+    flex-basis: 164px !important;
+    width: 164px !important;
+    height: 92px !important;
+  }
+}
