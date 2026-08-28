@@ -1339,3 +1339,68 @@ html[data-theme="light"] .case-empty{
     background-image: none !important;
   }
 }
+
+/* ===== V5.17 header scroll seam/flicker fix =====
+   The previous header changed background + backdrop-filter + border while the
+   fixed layer was also resizing. On some mobile/desktop Chromium/WebView
+   compositors that can expose a 1px frame of the page underneath, perceived
+   as a white line in dark mode or a black line in light mode.
+   Use an immediate opaque theme block, no border, no blur transition, and
+   keep the header height stable across the scroll threshold. */
+#header,
+header#header {
+  border: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+  transition: none !important;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+#header.scrolled,
+header#header.scrolled {
+  height: 72px !important;
+  min-height: 72px !important;
+  background: #080c12 !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-theme="light"] #header.scrolled,
+html[data-theme="light"] header#header.scrolled {
+  background: #ffffff !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Never create a one-pixel pseudo-element seam at the bottom edge. */
+#header.scrolled::before,
+header#header.scrolled::before,
+#header.scrolled::after,
+header#header.scrolled::after {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 720px) {
+  #header.scrolled,
+  header#header.scrolled {
+    height: 68px !important;
+    min-height: 68px !important;
+    background: #080c12 !important;
+    background-image: none !important;
+  }
+  html[data-theme="light"] #header.scrolled,
+  html[data-theme="light"] header#header.scrolled {
+    background: #ffffff !important;
+    background-image: none !important;
+  }
+}
