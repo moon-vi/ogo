@@ -1404,3 +1404,159 @@ header#header.scrolled::after {
     background-image: none !important;
   }
 }
+
+/* ===== V5.18 stable frosted header + smaller mobile controls =====
+   Keep one compositor layer alive at all times and only switch its opacity.
+   This preserves the transparent/frosted-glass look without the 1px seam
+   caused by dynamically adding/removing backdrop-filter, borders or height. */
+#header,
+header#header {
+  position: fixed !important;
+  isolation: isolate;
+  overflow: visible !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Stable glass compositor layer: present even before scrolling. */
+#header::after,
+header#header::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: -1px; /* overlap the next pixel so no compositing seam can show */
+  pointer-events: none;
+  opacity: 0;
+  background: rgba(8,12,18,.78);
+  backdrop-filter: blur(16px) saturate(135%);
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
+  transform: translateZ(0);
+  will-change: opacity;
+  transition: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] #header::after,
+html[data-theme="light"] header#header::after {
+  background: rgba(255,255,255,.82);
+}
+
+#header.scrolled,
+header#header.scrolled,
+html[data-theme="light"] #header.scrolled,
+html[data-theme="light"] header#header.scrolled {
+  background: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#header.scrolled::after,
+header#header.scrolled::after {
+  opacity: 1 !important;
+}
+
+#header .nav-shell {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+@media (max-width: 720px) {
+  /* Keep the mobile header compact in both top and scrolled states. */
+  #header,
+  header#header,
+  #header.scrolled,
+  header#header.scrolled {
+    height: 62px !important;
+    min-height: 62px !important;
+  }
+
+  #header .nav-shell {
+    height: 62px !important;
+    min-height: 62px !important;
+    padding: 0 14px !important;
+  }
+
+  #header .logo {
+    height: 62px !important;
+    gap: 7px !important;
+  }
+
+  #header .logo img {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    flex: 0 0 36px !important;
+  }
+
+  #header .logo strong {
+    font-size: 18px !important;
+    line-height: 1 !important;
+    letter-spacing: 1.8px !important;
+  }
+
+  #header .nav-actions {
+    height: 62px !important;
+    gap: 7px !important;
+  }
+
+  #header .theme-toggle,
+  #header .nav-toggle {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    flex: 0 0 38px !important;
+    font-size: 17px !important;
+  }
+
+  #main-nav {
+    top: 62px !important;
+  }
+
+  /* V5.16 paints the active banner into the top-state mobile header.
+     Keep that behavior; the glass layer above remains fully transparent. */
+  #header:not(.scrolled),
+  header#header:not(.scrolled) {
+    background-image: var(--mobile-active-banner-bg, none) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center top !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #header .nav-shell { padding: 0 12px !important; }
+  #header .logo { gap: 6px !important; }
+  #header .logo img {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    flex-basis: 34px !important;
+  }
+  #header .logo strong {
+    font-size: 17px !important;
+    letter-spacing: 1.5px !important;
+  }
+  #header .nav-actions { gap: 6px !important; }
+  #header .theme-toggle,
+  #header .nav-toggle {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    flex-basis: 36px !important;
+    font-size: 16px !important;
+  }
+}
