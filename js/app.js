@@ -353,7 +353,9 @@
   const getNewsPageSize=()=>window.matchMedia('(max-width:720px)').matches?2:5;
   let lastNewsPageSize=getNewsPageSize();
   function renderNews(){
+    const mobileNews=window.matchMedia('(max-width:720px)').matches;
     const PAGE=getNewsPageSize();
+    if(mobileNews) newsPage=1; // V5.12 mobile: only the latest two news items, no paging
     const items=newestFirst(data.news?.items||[]),pages=Math.max(1,Math.ceil(items.length/PAGE));newsPage=Math.min(Math.max(1,newsPage),pages);
     const pageItems=items.slice((newsPage-1)*PAGE,newsPage*PAGE);
     $('news-grid').innerHTML=pageItems.map(n=>`<article class="news-card" role="button" tabindex="0" data-id="${n.id}"><a class="seo-detail-link" href="news/${encodeURIComponent(n.id)}.html" aria-label="查看${esc(n.title)}独立详情页"></a><img src="${esc(n.thumb)}" alt="${esc(n.title)}" loading="lazy"><div class="news-info"><span class="news-tag">${esc(categoryName('news',n.category))}</span><h3 title="${esc(n.title)}">${esc(n.title)}</h3><div class="news-date">${esc(n.date||'')}</div><p title="${esc(n.desc||'')}">${esc(n.desc||'')}</p></div></article>`).join('');
@@ -388,7 +390,7 @@
   // Contact fixed-size cards
   const c=data.contact||{};
   const contacts=[['PHONE',c.phone],['MOBILE',c.mobile],['EMAIL',c.email],['ADDRESS',c.address]].filter(x=>x[1]);
-  $('contact-grid').innerHTML=contacts.map(x=>`<article class="contact-item"><small>${x[0]}</small><strong title="${esc(x[1])}">${esc(x[1])}</strong></article>`).join('');
+  $('contact-grid').innerHTML=contacts.map(x=>`<article class="contact-item" data-kind="${x[0]}"><small>${x[0]}</small><strong title="${esc(x[1])}">${esc(x[1])}</strong></article>`).join('');
   addBorderSweep($('contact-grid'));
 
   // Modal
