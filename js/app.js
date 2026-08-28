@@ -349,8 +349,11 @@
   addBorderSweep($('stats-grid'));
 
   // News: 5/page fixed-size
-  let newsPage=1;const PAGE=5;
+  let newsPage=1;
+  const getNewsPageSize=()=>window.matchMedia('(max-width:720px)').matches?2:5;
+  let lastNewsPageSize=getNewsPageSize();
   function renderNews(){
+    const PAGE=getNewsPageSize();
     const items=newestFirst(data.news?.items||[]),pages=Math.max(1,Math.ceil(items.length/PAGE));newsPage=Math.min(Math.max(1,newsPage),pages);
     const pageItems=items.slice((newsPage-1)*PAGE,newsPage*PAGE);
     $('news-grid').innerHTML=pageItems.map(n=>`<article class="news-card" role="button" tabindex="0" data-id="${n.id}"><a class="seo-detail-link" href="news/${encodeURIComponent(n.id)}.html" aria-label="查看${esc(n.title)}独立详情页"></a><img src="${esc(n.thumb)}" alt="${esc(n.title)}" loading="lazy"><div class="news-info"><span class="news-tag">${esc(categoryName('news',n.category))}</span><h3 title="${esc(n.title)}">${esc(n.title)}</h3><div class="news-date">${esc(n.date||'')}</div><p title="${esc(n.desc||'')}">${esc(n.desc||'')}</p></div></article>`).join('');
@@ -363,6 +366,17 @@
   }
   renderNews();
   $('news-pagination').onclick=e=>{const b=e.target.closest('button[data-p]');if(!b||b.disabled)return;newsPage=Number(b.dataset.p);renderNews()};
+  const newsMedia=window.matchMedia('(max-width:720px)');
+  const handleNewsPageSizeChange=()=>{
+    const nextSize=getNewsPageSize();
+    if(nextSize===lastNewsPageSize)return;
+    const firstVisibleIndex=(newsPage-1)*lastNewsPageSize;
+    lastNewsPageSize=nextSize;
+    newsPage=Math.floor(firstVisibleIndex/nextSize)+1;
+    renderNews();
+  };
+  if(newsMedia.addEventListener)newsMedia.addEventListener('change',handleNewsPageSizeChange);
+  else if(newsMedia.addListener)newsMedia.addListener(handleNewsPageSizeChange);
 
   // About fixed-size blocks
   $('about-title').textContent=data.about?.heroTitle||'';
