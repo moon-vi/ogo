@@ -105,10 +105,17 @@
 
   // Banner
   let slide=0,bannerTimer=null;
+  function setMobileHeaderBanner(index){
+    const items=data.banner||[];
+    const bg=items[index]?.bg||'';
+    const safe=String(bg).replace(/[\"\n\r]/g,'');
+    document.documentElement.style.setProperty('--mobile-active-banner-bg', safe ? `url("${safe}")` : 'none');
+  }
   function renderBanner(){
     const items=data.banner||[];
     $('banner-slides').innerHTML=items.map((b,i)=>`<article class="hero-slide ${i===0?'active':''}"><div class="hero-bg" style="background-image:url('${esc(b.bg)}')"></div><div class="hero-inner"><div class="hero-copy"><span class="eyebrow">LUNAR X / ${String(i+1).padStart(2,'0')}</span><h1>${b.title||''}</h1><p>${esc(b.desc||'')}</p><div class="hero-actions"><a class="btn primary" href="${esc(b.primaryLink||'#services')}">${esc(b.primary||'探索更多')}</a><a class="btn" href="${esc(b.secondaryLink||'#cases')}">${esc(b.secondary||'查看案例')}</a></div></div><div class="hero-art"><img src="${esc(b.img||'')}" alt=""></div></div></article>`).join('');
     $('banner-dots').innerHTML=items.map((_,i)=>`<button data-i="${i}" class="${i===0?'active':''}"></button>`).join('');
+    setMobileHeaderBanner(0);
   }
   function showSlide(i){
     const slides=[...document.querySelectorAll('.hero-slide')],dots=[...$('banner-dots').children];
@@ -116,6 +123,7 @@
     slide=(i+slides.length)%slides.length;
     slides.forEach((s,n)=>s.classList.toggle('active',n===slide));
     dots.forEach((d,n)=>d.classList.toggle('active',n===slide));
+    setMobileHeaderBanner(slide);
   }
   renderBanner();
   bannerTimer=setInterval(()=>showSlide(slide+1),6000);
