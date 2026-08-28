@@ -1299,3 +1299,43 @@ html[data-theme="light"] .case-empty{
     border-color: rgba(255,255,255,.26) !important;
   }
 }
+
+/* ===== V5.16 mobile top banner/header definitive fix =====
+   The mobile header no longer relies on seeing through to the hero layer.
+   While at the top, it paints the CURRENT banner image itself, so there can
+   be no black strip behind the logo/title/buttons. After scroll, the normal
+   theme-aware glass header takes over. */
+@media (max-width: 720px) {
+  #header:not(.scrolled),
+  header#header:not(.scrolled) {
+    background-color: transparent !important;
+    background-image: var(--mobile-active-banner-bg, none) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* A subtle transparent veil only improves text contrast; it is not a bar. */
+  #header:not(.scrolled)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(2,5,10,.10), rgba(2,5,10,.02));
+  }
+  #header .nav-shell {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  /* Once scrolled, remove the banner image completely and restore glass bar. */
+  #header.scrolled,
+  header#header.scrolled {
+    background-image: none !important;
+  }
+}
