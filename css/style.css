@@ -1187,3 +1187,66 @@ html[data-theme="light"] .case-empty{
   #header .theme-toggle,
   #header .nav-toggle { width: 44px !important; height: 44px !important; min-width: 44px !important; min-height: 44px !important; flex-basis: 44px !important; }
 }
+
+/* ===== V5.14 mobile header: transparent over banner, solid only after scroll ===== */
+@media (max-width: 720px) {
+  /* Initial state: let the banner image continue behind the navigation. */
+  #header,
+  header#header {
+    background: transparent !important;
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition: height .25s ease, background .25s ease, border-color .25s ease, backdrop-filter .25s ease !important;
+  }
+
+  /* Keep brand and controls readable while they sit directly on the banner. */
+  #header:not(.scrolled) .logo strong,
+  #header:not(.scrolled) .theme-toggle,
+  #header:not(.scrolled) .nav-toggle {
+    color: #fff !important;
+  }
+  #header:not(.scrolled) .theme-toggle,
+  #header:not(.scrolled) .nav-toggle {
+    border-color: rgba(255,255,255,.24) !important;
+    background: rgba(6,10,18,.16) !important;
+    backdrop-filter: blur(7px) !important;
+    -webkit-backdrop-filter: blur(7px) !important;
+  }
+
+  /* After scrolling: return to the same theme-aware glass bar used on desktop. */
+  #header.scrolled,
+  header#header.scrolled {
+    background: rgba(8,12,18,.88) !important;
+    border-bottom-color: var(--line) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+  }
+  html[data-theme="light"] #header.scrolled,
+  html[data-theme="light"] header#header.scrolled {
+    background: rgba(255,255,255,.90) !important;
+  }
+  #header.scrolled .logo strong,
+  #header.scrolled .theme-toggle,
+  #header.scrolled .nav-toggle {
+    color: var(--text) !important;
+  }
+  #header.scrolled .theme-toggle,
+  #header.scrolled .nav-toggle {
+    border-color: var(--line) !important;
+    background: rgba(255,255,255,.04) !important;
+  }
+  html[data-theme="light"] #header.scrolled .theme-toggle,
+  html[data-theme="light"] #header.scrolled .nav-toggle {
+    background: rgba(10,20,30,.035) !important;
+  }
+
+  /* Mobile menu remains readable regardless of whether the page has been scrolled. */
+  #main-nav.active {
+    background: var(--panel-strong) !important;
+    border-bottom: 1px solid var(--line) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+  }
+}
