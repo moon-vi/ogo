@@ -1250,3 +1250,52 @@ html[data-theme="light"] .case-empty{
     -webkit-backdrop-filter: blur(18px) !important;
   }
 }
+
+/* ===== V5.15 mobile banner/header seamless background =====
+   At the top of the page the fixed navigation must sit entirely on top of
+   the active Banner image.  The previous mobile rule used `auto 78%`, which
+   intentionally left a dark empty band above/below the image; that dark band
+   was visible through the transparent header. */
+@media (max-width: 720px) {
+  #banner.hero {
+    background: #06090e !important;
+  }
+
+  #banner .hero-slide,
+  #banner .hero-bg {
+    top: 0 !important;
+  }
+
+  #banner .hero-bg {
+    /* Fill the whole Banner, including the area behind the fixed header. */
+    inset: 0 !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+  }
+
+  /* Top state: absolutely no navigation colour layer. */
+  #header:not(.scrolled),
+  header#header:not(.scrolled) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  #header:not(.scrolled) .nav-shell {
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Controls can have their own small translucent circles, but no full-width bar. */
+  #header:not(.scrolled) .theme-toggle,
+  #header:not(.scrolled) .nav-toggle {
+    background: rgba(6,10,18,.16) !important;
+    border-color: rgba(255,255,255,.26) !important;
+  }
+}
