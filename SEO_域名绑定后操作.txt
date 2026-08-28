@@ -1,0 +1,3 @@
+当前 siteInfo.seo.siteUrl 为空，所以未生成正式 sitemap.xml 与 canonical 绝对地址。
+绑定域名后请在后台“网站设置”填写正式网站网址，再重新生成SEO静态详情页。
+当前独立 case/、news/、about.html、contact.html 已可正常访问与被站内链接发现。

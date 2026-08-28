@@ -1,0 +1,14 @@
+LUNAR X GitHub Pages 发布前检查
+
+□ 已把原网站 images 文件夹完整复制进本目录
+□ 首页 Banner 图片正常
+□ 案例首图正常
+□ 动态首图正常
+□ Logo 正常
+□ 关于我们视频封面正常
+□ 证书图片已决定是否公开
+□ js/data.js 中联系电话、邮箱、地址已检查
+□ SEO 标题、关键词、描述已确认
+□ ICP / 公安备案信息按实际情况填写
+□ 未上传 admin.html / admin-local.js
+□ 域名确定后再启用 CNAME 和 sitemap.xml
