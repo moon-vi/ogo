@@ -358,7 +358,13 @@
 
   // News: 5/page fixed-size
   let newsPage=1;
-  const getNewsPageSize=()=>window.matchMedia('(max-width:720px)').matches?3:5;
+  const getNewsPageSize=()=>{
+    const w=window.innerWidth||document.documentElement.clientWidth||1280;
+    if(w<=720)return 3;      // mobile: latest 3 list rows
+    if(w<=1000)return 3;     // compact desktop/tablet: one row of 3
+    if(w<=1280)return 4;     // medium desktop: one row of 4
+    return 5;                // wide desktop: one row of 5
+  };
   let lastNewsPageSize=getNewsPageSize();
   function renderNews(){
     const mobileNews=window.matchMedia('(max-width:720px)').matches;
@@ -387,6 +393,7 @@
   };
   if(newsMedia.addEventListener)newsMedia.addEventListener('change',handleNewsPageSizeChange);
   else if(newsMedia.addListener)newsMedia.addListener(handleNewsPageSizeChange);
+  window.addEventListener('resize',handleNewsPageSizeChange,{passive:true});
 
   // About fixed-size blocks
   $('about-title').textContent=data.about?.heroTitle||'';
