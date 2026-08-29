@@ -404,9 +404,34 @@
 
   // Contact fixed-size cards
   const c=data.contact||{};
+  const navDestination='衡阳市珠晖区湖南工学院教学楼';
   const contacts=[['PHONE',c.phone],['MOBILE',c.mobile],['EMAIL',c.email],['ADDRESS',c.address]].filter(x=>x[1]);
-  $('contact-grid').innerHTML=contacts.map(x=>`<article class="contact-item" data-kind="${x[0]}"><small>${x[0]}</small><strong title="${esc(x[1])}">${esc(x[1])}</strong></article>`).join('');
+  const contactHref=(kind,value)=>{
+    if(kind==='PHONE'||kind==='MOBILE') return `tel:${String(value).replace(/[^+\d]/g,'')}`;
+    if(kind==='EMAIL') return `mailto:${value}`;
+    if(kind==='ADDRESS') return '#';
+    return '#';
+  };
+  $('contact-grid').innerHTML=contacts.map(x=>{
+    const navAttr=x[0]==='ADDRESS'?` data-nav-destination="${esc(navDestination)}"`:'';
+    const label=x[0]==='ADDRESS'?`打开导航前往${navDestination}`:x[0]==='EMAIL'?`发送邮件到${x[1]}`:`拨打${x[1]}`;
+    return `<a class="contact-item contact-link" data-kind="${x[0]}" href="${esc(contactHref(x[0],x[1]))}"${navAttr} aria-label="${esc(label)}"><small>${x[0]}</small><strong title="${esc(x[1])}">${esc(x[1])}</strong></a>`;
+  }).join('');
   addBorderSweep($('contact-grid'));
+  $('contact-grid').addEventListener('click',e=>{
+    const link=e.target.closest('[data-nav-destination]');
+    if(!link) return;
+    e.preventDefault();
+    const dest=link.dataset.navDestination||navDestination;
+    const ua=navigator.userAgent||'';
+    if(/Android/i.test(ua)){
+      location.href=`geo:0,0?q=${encodeURIComponent(dest)}`;
+    }else if(/iPhone|iPad|iPod/i.test(ua)){
+      location.href=`https://maps.apple.com/?daddr=${encodeURIComponent(dest)}&dirflg=d`;
+    }else{
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(dest)}`,'_blank','noopener');
+    }
+  });
 
   // Modal
   function openCaseDetail(id){
