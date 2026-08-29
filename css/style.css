@@ -1560,3 +1560,69 @@ header#header.scrolled::after {
     font-size: 16px !important;
   }
 }
+
+
+/* ===== V5.19 desktop responsive single-row capability + news =====
+   Desktop/tablet only. Mobile <=720px keeps the streamlined V5.12/V5.13 layout. */
+@media (min-width: 721px) {
+  /* Capability always remains one row of four cards. */
+  #stats .stats-track {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+  #stats .stat-card {
+    min-width: 0 !important;
+    width: auto !important;
+  }
+
+  /* News is always exactly one row; JS supplies 5 / 4 / 3 items per page. */
+  #news .news-grid {
+    display: grid !important;
+    grid-auto-flow: row !important;
+    gap: 12px !important;
+  }
+}
+
+@media (min-width: 1281px) {
+  #news .news-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+}
+
+@media (min-width: 1001px) and (max-width: 1280px) {
+  #news .news-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  #stats .stat-card { height: 196px !important; padding: 20px !important; }
+  #stats .stat-value { font-size: 42px !important; margin: 22px 0 10px !important; }
+  #stats .stat-card h3 { font-size: 14px !important; }
+  #stats .stat-card p { font-size: 10px !important; }
+}
+
+@media (min-width: 721px) and (max-width: 1000px) {
+  #news .news-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+
+  /* Shrink capability cards instead of wrapping to two rows. */
+  #stats .stats-track { gap: 8px !important; }
+  #stats .stat-card {
+    height: 168px !important;
+    padding: 14px 12px !important;
+  }
+  #stats .stat-index { font-size: 8px !important; letter-spacing: 1.4px !important; }
+  #stats .stat-value {
+    font-size: clamp(28px, 4.6vw, 38px) !important;
+    margin: 16px 0 8px !important;
+    line-height: 1 !important;
+  }
+  #stats .stat-card h3 {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 5px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  #stats .stat-card p {
+    height: 30px !important;
+    font-size: 9px !important;
+    line-height: 1.45 !important;
+    -webkit-line-clamp: 2 !important;
+  }
+}
