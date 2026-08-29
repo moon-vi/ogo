@@ -1669,3 +1669,44 @@ header#header.scrolled::after {
     max-height: 74vh !important;
   }
 }
+
+/* ===== V5.21 mobile menu: transparent frosted glass =====
+   Keep the menu visually connected to the Banner/page instead of showing a
+   solid panel.  A very light translucent tint is retained only so that the
+   browser can render a stable backdrop blur in both themes. */
+@media (max-width: 720px) {
+  #main-nav,
+  #main-nav.active {
+    background: rgba(8,12,18,.10) !important;
+    background-image: none !important;
+    border: 0 !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: blur(18px) saturate(135%) !important;
+    backdrop-filter: blur(18px) saturate(135%) !important;
+  }
+
+  html[data-theme="light"] #main-nav,
+  html[data-theme="light"] #main-nav.active {
+    background: rgba(255,255,255,.10) !important;
+  }
+
+  #main-nav a,
+  #main-nav.active a {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  #main-nav a:hover,
+  #main-nav a:focus-visible,
+  #main-nav a.active {
+    background: rgba(255,255,255,.08) !important;
+  }
+
+  html[data-theme="light"] #main-nav a:hover,
+  html[data-theme="light"] #main-nav a:focus-visible,
+  html[data-theme="light"] #main-nav a.active {
+    background: rgba(255,255,255,.16) !important;
+  }
+}
