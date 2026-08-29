@@ -506,10 +506,20 @@
 
   // Header / theme / mobile
   $('theme-toggle').onclick=()=>{document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'};
-  $('nav-toggle').onclick=()=>$('main-nav').classList.toggle('active');
-  document.querySelectorAll('#main-nav a').forEach(a=>a.onclick=()=>$('main-nav').classList.remove('active'));
+  const mobileNav=$('main-nav');
+  const navToggle=$('nav-toggle');
+  const closeMobileNav=()=>mobileNav.classList.remove('active');
+  navToggle.onclick=e=>{e.stopPropagation();mobileNav.classList.toggle('active')};
+  document.querySelectorAll('#main-nav a').forEach(a=>a.onclick=closeMobileNav);
+  // Mobile menu behaves like a temporary layer: any scroll or tap outside closes it.
+  document.addEventListener('pointerdown',e=>{
+    if(!mobileNav.classList.contains('active'))return;
+    if(mobileNav.contains(e.target)||navToggle.contains(e.target))return;
+    closeMobileNav();
+  },{passive:true});
   const back=$('back-to-top');
   window.addEventListener('scroll',()=>{
+    closeMobileNav();
     $('header').classList.toggle('scrolled',scrollY>30);back.classList.toggle('visible',scrollY>500);
     let cur='banner';['banner','services','cases','stats','news','about','contact'].forEach(id=>{const el=$(id);if(el&&scrollY>=el.offsetTop-120)cur=id});
     document.querySelectorAll('#main-nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
