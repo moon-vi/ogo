@@ -1626,3 +1626,46 @@ header#header.scrolled::after {
     -webkit-line-clamp: 2 !important;
   }
 }
+
+/* ===== V5.20 mobile menu auto-close + smaller detail modal ===== */
+@media (max-width: 720px) {
+  /* Case/news detail modal: deliberately lighter and smaller on phones. */
+  #modal-overlay {
+    padding: 12px !important;
+  }
+  #modal-overlay .content-modal {
+    width: min(90vw, 520px) !important;
+    height: min(76vh, 620px) !important;
+    max-width: 520px !important;
+    max-height: 76vh !important;
+    border-radius: 16px !important;
+  }
+  #modal-overlay .content-modal #modal-body .detail-view .detail-head {
+    padding: 17px 16px 12px !important;
+  }
+  #modal-overlay .content-modal #modal-body .detail-view .detail-head h2 {
+    font-size: 15px !important;
+    line-height: 1.4 !important;
+    margin-top: 5px !important;
+  }
+  #modal-overlay .content-modal #modal-body .detail-view .detail-body {
+    padding: 16px 16px 22px !important;
+  }
+  #modal-overlay .content-modal #modal-body .detail-view .detail-body p {
+    font-size: 13px !important;
+    line-height: 1.75 !important;
+  }
+  #modal-overlay .modal-close {
+    right: 9px !important;
+    top: 6px !important;
+    font-size: 26px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #modal-overlay .content-modal {
+    width: 92vw !important;
+    height: min(74vh, 580px) !important;
+    max-height: 74vh !important;
+  }
+}
