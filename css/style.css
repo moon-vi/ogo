@@ -1826,3 +1826,100 @@ header#header.scrolled::after {
   }
   #contact .contact-item strong{font-size:9px !important}
 }
+
+
+/* ===== V5.23 domestic map chooser: Amap / Baidu ===== */
+body.map-choice-open{overflow:hidden}
+.map-choice-overlay{
+  position:fixed;
+  inset:0;
+  z-index:12000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  background:rgba(2,6,12,.38);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .18s ease,visibility .18s ease;
+  -webkit-backdrop-filter:blur(8px) saturate(120%);
+  backdrop-filter:blur(8px) saturate(120%);
+}
+.map-choice-overlay.show{opacity:1;visibility:visible}
+.map-choice-panel{
+  position:relative;
+  width:min(430px,calc(100vw - 36px));
+  padding:24px;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(9,14,22,.82);
+  box-shadow:0 24px 80px rgba(0,0,0,.35);
+  -webkit-backdrop-filter:blur(22px) saturate(145%);
+  backdrop-filter:blur(22px) saturate(145%);
+  transform:translateY(8px) scale(.985);
+  transition:transform .18s ease;
+}
+.map-choice-overlay.show .map-choice-panel{transform:translateY(0) scale(1)}
+html[data-theme="light"] .map-choice-overlay{background:rgba(235,240,248,.32)}
+html[data-theme="light"] .map-choice-panel{
+  background:rgba(255,255,255,.86);
+  border-color:rgba(20,35,55,.1);
+  box-shadow:0 24px 70px rgba(45,60,80,.16);
+}
+.map-choice-close{
+  position:absolute;
+  top:14px;
+  right:14px;
+  width:32px;
+  height:32px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  color:var(--text);
+  font-size:22px;
+  line-height:1;
+  cursor:pointer;
+}
+html[data-theme="light"] .map-choice-close{background:rgba(10,25,45,.06)}
+.map-choice-kicker{font-size:9px;letter-spacing:2px;color:var(--primary);margin-bottom:7px}
+.map-choice-panel h3{margin:0 38px 7px 0;font-size:22px;line-height:1.25}
+.map-choice-panel>p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
+.map-choice-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.map-choice-btn{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
+  padding:14px;
+  border-radius:15px;
+  border:1px solid var(--line);
+  color:inherit;
+  text-decoration:none;
+  background:rgba(255,255,255,.045);
+  transition:transform .18s ease,border-color .18s ease,background .18s ease;
+}
+html[data-theme="light"] .map-choice-btn{background:rgba(10,25,45,.035)}
+.map-choice-btn:hover{transform:translateY(-2px);border-color:rgba(79,199,255,.48);background:rgba(79,199,255,.075)}
+.map-choice-icon{
+  flex:0 0 auto;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:800;
+  color:#fff;
+  background:linear-gradient(145deg,#18b875,#0a8fef);
+}
+.map-choice-btn.baidu .map-choice-icon{background:linear-gradient(145deg,#3385ff,#6957ff)}
+.map-choice-btn span:last-child{min-width:0;display:block}
+.map-choice-btn strong{display:block;font-size:13px;line-height:1.3}
+.map-choice-btn small{display:block;margin-top:3px;font-size:9px;color:var(--muted);white-space:nowrap}
+@media(max-width:720px){
+  .map-choice-overlay{align-items:flex-end;padding:14px}
+  .map-choice-panel{width:100%;padding:20px 18px calc(20px + env(safe-area-inset-bottom));border-radius:20px}
+  .map-choice-panel h3{font-size:19px}
+  .map-choice-actions{grid-template-columns:1fr;gap:9px;margin-top:16px}
+  .map-choice-btn{padding:12px 13px}
+}
