@@ -1971,3 +1971,22 @@ html[data-theme="light"] .map-choice-btn{background:rgba(10,25,45,.035)}
     aspect-ratio:auto !important;
   }
 }
+
+
+/* ===== V5.25 Banner mouse/touch swipe ===== */
+#banner{
+  touch-action:pan-y pinch-zoom;
+  cursor:grab;
+}
+#banner.banner-dragging{cursor:grabbing}
+#banner .hero-slide,#banner .hero-bg,#banner .hero-inner{
+  user-select:none;
+  -webkit-user-select:none;
+}
+#banner .hero-art img{
+  -webkit-user-drag:none;
+  user-drag:none;
+  pointer-events:none;
+}
+#banner .hero-actions a,#banner .hero-controls button{cursor:pointer}
+@media (hover:none),(pointer:coarse){#banner{cursor:default}}
