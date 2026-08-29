@@ -1923,3 +1923,51 @@ html[data-theme="light"] .map-choice-btn{background:rgba(10,25,45,.035)}
   .map-choice-actions{grid-template-columns:1fr;gap:9px;margin-top:16px}
   .map-choice-btn{padding:12px 13px}
 }
+
+/* ===== V5.24 About responsive layout: wide = left stacked cards + right video ===== */
+@media (min-width: 1180px){
+  #about .about-layout{
+    display:grid !important;
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr) !important;
+    gap:28px !important;
+    align-items:stretch !important;
+  }
+  #about .about-text{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    grid-template-rows:repeat(3,minmax(0,1fr)) !important;
+    gap:10px !important;
+    width:auto !important;
+    height:390px !important;
+    min-width:0 !important;
+  }
+  #about .about-block{
+    width:auto !important;
+    min-width:0 !important;
+    height:auto !important;
+    min-height:0 !important;
+    padding:16px 17px !important;
+  }
+  #about .about-block h3{
+    font-size:14px !important;
+    margin:0 0 7px !important;
+    white-space:normal !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+  }
+  #about .about-copy{
+    height:72px !important;
+  }
+  #about .about-copy p,
+  #about .about-copy ul{
+    font-size:12px !important;
+    line-height:1.65 !important;
+  }
+  #about .about-video{
+    width:100% !important;
+    height:390px !important;
+    min-height:390px !important;
+    max-height:390px !important;
+    aspect-ratio:auto !important;
+  }
+}
