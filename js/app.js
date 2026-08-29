@@ -418,20 +418,65 @@
     return `<a class="contact-item contact-link" data-kind="${x[0]}" href="${esc(contactHref(x[0],x[1]))}"${navAttr} aria-label="${esc(label)}"><small>${x[0]}</small><strong title="${esc(x[1])}">${esc(x[1])}</strong></a>`;
   }).join('');
   addBorderSweep($('contact-grid'));
+  // V5.23: domestic map chooser (Amap / Baidu), shared by PC and mobile.
+  const mapDestination={
+    name:navDestination,
+    city:'衡阳',
+    // 湖南工学院教学大楼附近坐标；用于高德 URI 直接进入路径规划。
+    lng:112.6795,
+    lat:26.8869
+  };
+  const mapUrls={
+    amap:()=>{
+      const to=`${mapDestination.lng},${mapDestination.lat},${mapDestination.name}`;
+      return `https://uri.amap.com/navigation?from=&to=${encodeURIComponent(to)}&mode=car&policy=0&src=lunarx.website&callnative=1`;
+    },
+    baidu:()=>`https://api.map.baidu.com/direction?origin=${encodeURIComponent('我的位置')}&destination=${encodeURIComponent(mapDestination.name)}&mode=driving&region=${encodeURIComponent(mapDestination.city)}&output=html&src=webapp.lunarx.website`
+  };
+
+  function closeMapChooser(){
+    const overlay=document.getElementById('map-choice-overlay');
+    if(!overlay) return;
+    overlay.classList.remove('show');
+    document.body.classList.remove('map-choice-open');
+    setTimeout(()=>overlay.remove(),180);
+  }
+
+  function openMapChooser(){
+    closeMapChooser();
+    const overlay=document.createElement('div');
+    overlay.id='map-choice-overlay';
+    overlay.className='map-choice-overlay';
+    overlay.innerHTML=`
+      <div class="map-choice-panel" role="dialog" aria-modal="true" aria-labelledby="map-choice-title">
+        <button class="map-choice-close" type="button" aria-label="关闭">×</button>
+        <div class="map-choice-kicker">NAVIGATION</div>
+        <h3 id="map-choice-title">选择地图导航</h3>
+        <p>终点：${esc(mapDestination.name)}</p>
+        <div class="map-choice-actions">
+          <a class="map-choice-btn amap" href="${esc(mapUrls.amap())}" target="_blank" rel="noopener">
+            <span class="map-choice-icon">A</span><span><strong>高德地图</strong><small>打开高德导航</small></span>
+          </a>
+          <a class="map-choice-btn baidu" href="${esc(mapUrls.baidu())}" target="_blank" rel="noopener">
+            <span class="map-choice-icon">B</span><span><strong>百度地图</strong><small>打开百度导航</small></span>
+          </a>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    document.body.classList.add('map-choice-open');
+    requestAnimationFrame(()=>overlay.classList.add('show'));
+    overlay.querySelector('.map-choice-close').addEventListener('click',closeMapChooser);
+    overlay.addEventListener('click',ev=>{if(ev.target===overlay) closeMapChooser()});
+    overlay.querySelectorAll('.map-choice-btn').forEach(btn=>btn.addEventListener('click',()=>setTimeout(closeMapChooser,100)));
+  }
+
   $('contact-grid').addEventListener('click',e=>{
     const link=e.target.closest('[data-nav-destination]');
     if(!link) return;
     e.preventDefault();
-    const dest=link.dataset.navDestination||navDestination;
-    const ua=navigator.userAgent||'';
-    if(/Android/i.test(ua)){
-      location.href=`geo:0,0?q=${encodeURIComponent(dest)}`;
-    }else if(/iPhone|iPad|iPod/i.test(ua)){
-      location.href=`https://maps.apple.com/?daddr=${encodeURIComponent(dest)}&dirflg=d`;
-    }else{
-      window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(dest)}`,'_blank','noopener');
-    }
+    openMapChooser();
   });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape') closeMapChooser()});
 
   // Modal
   function openCaseDetail(id){
