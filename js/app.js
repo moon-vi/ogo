@@ -126,9 +126,61 @@
     setMobileHeaderBanner(slide);
   }
   renderBanner();
-  bannerTimer=setInterval(()=>showSlide(slide+1),6000);
-  $('banner-prev').onclick=()=>showSlide(slide-1);$('banner-next').onclick=()=>showSlide(slide+1);
-  $('banner-dots').onclick=e=>{if(e.target.dataset.i!==undefined)showSlide(Number(e.target.dataset.i))};
+  function restartBannerTimer(){
+    if(bannerTimer)clearInterval(bannerTimer);
+    bannerTimer=setInterval(()=>showSlide(slide+1),6000);
+  }
+  restartBannerTimer();
+  $('banner-prev').onclick=()=>{showSlide(slide-1);restartBannerTimer()};
+  $('banner-next').onclick=()=>{showSlide(slide+1);restartBannerTimer()};
+  $('banner-dots').onclick=e=>{if(e.target.dataset.i!==undefined){showSlide(Number(e.target.dataset.i));restartBannerTimer()}};
+
+  // V5.25 Banner swipe / mouse drag navigation.
+  // Horizontal gestures switch slides; vertical touch movement keeps normal page scrolling.
+  const bannerEl=$('banner');
+  if(bannerEl){
+    let pointerId=null,startX=0,startY=0,lastX=0,lastY=0,dragging=false,horizontal=false,suppressClick=false;
+    const interactiveTarget=t=>t?.closest?.('a,button,input,textarea,select,label');
+    bannerEl.addEventListener('pointerdown',e=>{
+      if(interactiveTarget(e.target))return;
+      pointerId=e.pointerId;startX=lastX=e.clientX;startY=lastY=e.clientY;
+      dragging=true;horizontal=false;suppressClick=false;
+      if(e.pointerType==='mouse')bannerEl.classList.add('banner-dragging');
+      if(bannerTimer)clearInterval(bannerTimer);
+    });
+    bannerEl.addEventListener('pointermove',e=>{
+      if(!dragging||e.pointerId!==pointerId)return;
+      lastX=e.clientX;lastY=e.clientY;
+      const dx=lastX-startX,dy=lastY-startY;
+      if(!horizontal&&Math.abs(dx)>10&&Math.abs(dx)>Math.abs(dy)*1.15){
+        horizontal=true;
+        suppressClick=true;
+        try{bannerEl.setPointerCapture(e.pointerId)}catch(_){ }
+      }
+      if(horizontal&&e.cancelable)e.preventDefault();
+    },{passive:false});
+    const endBannerDrag=e=>{
+      if(!dragging||e.pointerId!==pointerId)return;
+      const dx=(e.clientX??lastX)-startX,dy=(e.clientY??lastY)-startY;
+      if(horizontal&&Math.abs(dx)>=48&&Math.abs(dx)>Math.abs(dy)){
+        showSlide(dx<0?slide+1:slide-1);
+      }
+      dragging=false;horizontal=false;pointerId=null;
+      bannerEl.classList.remove('banner-dragging');
+      restartBannerTimer();
+      if(suppressClick)setTimeout(()=>{suppressClick=false},80);
+    };
+    bannerEl.addEventListener('pointerup',endBannerDrag);
+    bannerEl.addEventListener('pointercancel',endBannerDrag);
+    bannerEl.addEventListener('lostpointercapture',e=>{
+      if(dragging&&e.pointerId===pointerId)endBannerDrag(e);
+    });
+    bannerEl.addEventListener('click',e=>{
+      if(suppressClick&&!interactiveTarget(e.target)){
+        e.preventDefault();e.stopPropagation();
+      }
+    },true);
+  }
 
   // Services fixed-size cards
   $('services-track').innerHTML=(data.services||[]).map(s=>`<article class="service-card"><div class="service-icon">${icons[s.icon]||'✦'}</div><h3 title="${esc(s.title)}">${esc(s.title)}</h3><p title="${esc(s.desc)}">${esc(s.desc)}</p><div class="service-features">${(s.features||[]).map(f=>`<span>${esc(f)}</span>`).join('')}</div></article>`).join('');
